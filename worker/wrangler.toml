@@ -1,0 +1,12 @@
+name = "casamento-pagbank"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# Variáveis de ambiente públicas (sem secrets)
+[vars]
+PAGBANK_ENV = "production"   # Alterado para cobrar de verdade
+
+# O PAGBANK_TOKEN deve ser configurado como Secret:
+# No terminal, rode: wrangler secret put PAGBANK_TOKEN
+# Cole seu Bearer Token do PagBank quando solicitado.
+# NÃO coloque o token aqui no arquivo, pois o arquivo vai para o GitHub.

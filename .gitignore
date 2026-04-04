@@ -1,0 +1,5 @@
+# Ignore intermediate files and credentials
+.env
+.tmp/
+credentials.json
+token.json
