@@ -42,10 +42,10 @@ export default {
 async function handleCardPayment(request, env) {
     try {
         const body = await request.json();
-        const { encryptedCard, holderName, amount, installments, giftTitle } = body;
+        const { encryptedCard, holderName, holderTaxId, amount, installments, giftTitle } = body;
 
         // Validações básicas
-        if (!encryptedCard || !holderName || !amount || !installments) {
+        if (!encryptedCard || !holderName || !holderTaxId || !amount || !installments) {
             return jsonError("Dados incompletos para processar o pagamento.", 400);
         }
         if (amount < 100) {
@@ -62,7 +62,7 @@ async function handleCardPayment(request, env) {
             customer: {
                 name: holderName,
                 email: "convidado@casamento.com", // Pode coletar e-mail do usuário futuramente
-                tax_id: "00000000000"              // CPF do convidado — pode coletar no form futuramente
+                tax_id: holderTaxId
             },
             items: [
                 {
@@ -87,7 +87,8 @@ async function handleCardPayment(request, env) {
                             encrypted: encryptedCard,
                             security_code: null, // já está no encryptedCard
                             holder: {
-                                name: holderName
+                                name: holderName,
+                                tax_id: holderTaxId
                             },
                             store: false
                         }

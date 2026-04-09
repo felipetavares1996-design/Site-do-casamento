@@ -217,6 +217,16 @@ function showCardPanel() {
         this.value = this.value.replace(/\D/g, '').substring(0, 4);
     };
 
+    // CPF Masking
+    const cardTaxIdInput = document.getElementById('card-taxid');
+    cardTaxIdInput.oninput = function() {
+        let val = this.value.replace(/\D/g, '').substring(0, 11);
+        if (val.length > 9) val = val.substring(0,3) + '.' + val.substring(3,6) + '.' + val.substring(6,9) + '-' + val.substring(9);
+        else if (val.length > 6) val = val.substring(0,3) + '.' + val.substring(3,6) + '.' + val.substring(6);
+        else if (val.length > 3) val = val.substring(0,3) + '.' + val.substring(3);
+        this.value = val;
+    };
+
     // Generate Installment Options
     const select = document.getElementById('installments-select');
     select.innerHTML = '';
@@ -258,6 +268,7 @@ async function processCardPayment(event) {
 
     // Lê os valores dos inputs
     const holderName  = document.getElementById('card-holder').value.trim().toUpperCase();
+    const holderTaxId = document.getElementById('card-taxid').value.replace(/\D/g, '');
     const rawNumber   = document.getElementById('card-number').value.replace(/\s/g, '');
     const expiryRaw   = document.getElementById('card-expiry').value; // MM/AA
     const cvv         = document.getElementById('card-cvv').value.trim();
@@ -306,6 +317,7 @@ async function processCardPayment(event) {
             body: JSON.stringify({
                 encryptedCard,
                 holderName,
+                holderTaxId,
                 amount: amountInCents,
                 installments,
                 giftTitle: document.getElementById('modal-gift-name').textContent
