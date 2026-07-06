@@ -136,13 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = isFeatured ? 'gift-card featured' : 'gift-card';
         card.style.animationDelay = `${(index % 10) * 0.1}s`; // Stagger animation slightly
         
-        let badgeHtml = '';
-        if (isFeatured) {
-            badgeHtml = `<div class="featured-badge">🌟 Cota Premium</div>`;
-        }
-        
         card.innerHTML = `
-            ${badgeHtml}
             ${mediaHtml}
             <h3 class="gift-title">${gift.title}</h3>
             <p class="gift-price">R$ ${gift.priceStr}</p>
