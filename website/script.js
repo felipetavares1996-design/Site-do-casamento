@@ -104,27 +104,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pricesString = ["300,00", "200,00", "300,00", "150,00", "300,00", "300,00", "150,00", "350,00", "150,00", "200,00", "350,00", "800,00", "200,00", "500,00", "500,00", "300,00", "269,69", "250,00", "300,00", "200,00", "400,00", "500,00", "500,00", "300,00", "250,00", "500,00", "300,00", "400,00", "550,00", "300,00", "850,00", "400,00", "350,00", "350,00", "350,00", "700,00", "500,00", "250,00", "700,00", "500,00", "750,00", "1000,00", "800,00", "450,00", "450,00", "600,00", "999,99", "1000,00", "500,00", "500,00", "1500,00", "1500,00", "1500,00", "700,00", "700,00", "800,00", "3500,00", "2000,00", "400,00", "1000,00", "1000,00", "1500,00", "1000,00", "1000,00", "3000,00", "1000,00", "3000,00", "4000,00"];
 
+    // Combine gifts and pricesString, parse price values
+    const combinedGifts = gifts.map((gift, index) => {
+        const priceStr = pricesString[index] || "0,00";
+        const priceValue = parseFloat(priceStr.replace('.', '').replace(',', '.'));
+        return {
+            ...gift,
+            priceStr,
+            priceValue
+        };
+    });
+
+    // Sort gifts by priceValue in descending order
+    combinedGifts.sort((a, b) => b.priceValue - a.priceValue);
+
     // Populate gifts
     const giftsGrid = document.getElementById('gifts-grid');
     
-    gifts.forEach((gift, index) => {
+    combinedGifts.forEach((gift, index) => {
         let mediaHtml = '';
         if (gift.image) {
             mediaHtml = `<div class="gift-image-container"><img src="./${gift.image}" alt="${gift.title}" class="gift-image"></div>`;
         }
 
-        const price = pricesString[index] || "0,00";
+        // Determine if it should be highlighted (featured)
+        // Items with price >= R$ 1.500,00 are featured
+        const isFeatured = gift.priceValue >= 1500.00;
 
         // create card
         const card = document.createElement('div');
-        card.className = 'gift-card';
+        card.className = isFeatured ? 'gift-card featured' : 'gift-card';
         card.style.animationDelay = `${(index % 10) * 0.1}s`; // Stagger animation slightly
         
+        let badgeHtml = '';
+        if (isFeatured) {
+            badgeHtml = `<div class="featured-badge">🌟 Cota Premium</div>`;
+        }
+        
         card.innerHTML = `
+            ${badgeHtml}
             ${mediaHtml}
             <h3 class="gift-title">${gift.title}</h3>
-            <p class="gift-price">R$ ${price}</p>
-            <button class="gift-btn" onclick="openPaymentModal('${gift.title}', '${price}')">Presentear</button>
+            <p class="gift-price">R$ ${gift.priceStr}</p>
+            <button class="gift-btn" onclick="openPaymentModal('${gift.title.replace(/'/g, "\\'")}', '${gift.priceStr}')">Presentear</button>
         `;
         
         giftsGrid.appendChild(card);

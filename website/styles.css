@@ -298,6 +298,51 @@ h1, h2, h3, .nav-logo {
     left: 0;
 }
 
+/* Featured / Premium Gift Cards */
+.gift-card.featured {
+    grid-column: span 2;
+    border: 2px solid #E8C9C1;
+    box-shadow: 0 15px 35px rgba(232, 201, 193, 0.25);
+    background: linear-gradient(145deg, #ffffff, #fffcfb);
+}
+
+.gift-card.featured::before {
+    background: linear-gradient(90deg, #d4af37, #E8C9C1);
+}
+
+.gift-card.featured:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(232, 201, 193, 0.45);
+    border-color: var(--primary-color);
+}
+
+.gift-card.featured .gift-image-container {
+    height: 250px;
+}
+
+.featured-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #B29B82, #E8C9C1);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(232, 201, 193, 0.3);
+    z-index: 10;
+    pointer-events: none;
+    animation: featuredPulse 2s infinite alternate;
+}
+
+@keyframes featuredPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
 .gift-icon {
     font-size: 2.5rem;
     color: var(--primary-color);
@@ -633,6 +678,12 @@ h1, h2, h3, .nav-logo {
 @media (max-width: 500px) {
     .gifts-grid {
         grid-template-columns: 1fr;
+    }
+    .gift-card.featured {
+        grid-column: span 1;
+    }
+    .gift-card.featured .gift-image-container {
+        height: 200px;
     }
     .modal-content {
         padding: 25px 20px;
